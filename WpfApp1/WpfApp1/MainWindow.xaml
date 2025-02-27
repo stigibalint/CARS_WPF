@@ -1,0 +1,145 @@
+﻿<Window x:Class="WpfApp1.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MySQL Alkalmazás" Height="600" Width="800">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TabControl Grid.Row="1">
+            <TabControl.Resources>
+                <Style TargetType="TabPanel">
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                </Style>
+            </TabControl.Resources>
+
+            <TabItem Header="Termékek">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0">
+                        <TextBlock Text="Termékek:" FontWeight="Bold" Margin="0,0,0,5"/>
+                        <ListBox Name="lstProducts" 
+                                ItemsSource="{Binding Products}" 
+                                Height="380"
+                                SelectionChanged="lstProducts_SelectionChanged"
+                                DisplayMemberPath="ProductName"/>
+                    </StackPanel>
+
+                    <Border Grid.Row="1" BorderBrush="LightGray" BorderThickness="0,1,0,0" Padding="0,10,0,0" Margin="0,10,0,0">
+                        <StackPanel>
+                            <TextBlock Text="Rendelési információ:" FontWeight="Bold" Margin="0,0,0,5"/>
+                            <TextBlock Name="txtOrderCount" 
+                                      Text="Válasszon egy terméket" 
+                                      Padding="5"
+                                      Background="AliceBlue"
+                                      FontSize="14"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Ügyfelek">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0" Padding="0,0,0,10" Margin="0,0,0,10" BorderBrush="LightGray" BorderThickness="0,0,0,1">
+                        <StackPanel>
+                            <TextBlock Text="Ügyfél keresés" FontWeight="Bold" Margin="0,0,0,10"/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Ország:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                <ComboBox Name="cmbCountries" 
+                                        Width="200" 
+                                        ItemsSource="{Binding Countries}" 
+                                        SelectionChanged="cmbCountries_SelectionChanged"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <Grid Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Text="Ügyfelek listája:" FontWeight="Bold" Margin="0,0,0,5"/>
+
+                        <ListView Grid.Row="1" Name="lstCustomers" ItemsSource="{Binding Customers}">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Név" DisplayMemberBinding="{Binding CustomerName}" Width="300"/>
+                                    <GridViewColumn Header="Város" DisplayMemberBinding="{Binding City}" Width="150"/>
+                                    <GridViewColumn Header="Telefon" DisplayMemberBinding="{Binding Phone}" Width="200"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Rendelések">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Text="Rendelések:" FontWeight="Bold" Margin="0,0,0,5"/>
+
+                        <ListView Grid.Row="1" Name="dgOrders" 
+                                ItemsSource="{Binding Orders}"
+                                SelectionChanged="dgOrders_SelectionChanged">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Rendelés #" DisplayMemberBinding="{Binding OrderNumber}" Width="80"/>
+                                    <GridViewColumn Header="Dátum" DisplayMemberBinding="{Binding OrderDate, StringFormat=\{0:yyyy.MM.dd\}}" Width="120"/>
+                                    <GridViewColumn Header="Státusz" DisplayMemberBinding="{Binding Status}" Width="120"/>
+                                    <GridViewColumn Header="Ügyfél #" DisplayMemberBinding="{Binding CustomerNumber}" Width="80"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </Grid>
+
+         
+                    <Grid Grid.Row="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Text="Termékek a kiválasztott rendelésben:" FontWeight="Bold" Margin="0,0,0,5"/>
+
+                        <ListBox Grid.Row="1" Name="lstOrderProducts" 
+                                ItemsSource="{Binding OrderProducts}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="{Binding ProductName}" />
+                                        <TextBlock Grid.Column="1" Text="{Binding BuyPrice, StringFormat=\{0:C\}}" Margin="15,0,0,0" FontWeight="Bold"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Grid>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
